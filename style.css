@@ -1,9 +1,8 @@
-\
 body {
-    font-family: 'Poppins', sans-serif; /* Changed font for a modern look */
+    font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f6f9; /* Lighter, modern background */
+    background-color: #f4f6f9;
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -14,9 +13,9 @@ body {
     width: 100%;
     max-width: 450px; 
     background-color: #ffffff;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.1); /* Deeper shadow */
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
     border-radius: 10px;
-    overflow: hidden; /* Clean edges */
+    overflow: hidden;
 }
 
 /* --- Header Styling (Video Embed) --- */
@@ -35,23 +34,24 @@ body {
     height: 0;
 }
 
+.video-wrapper #youtube-player,
 .video-wrapper iframe {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    /* Key change: Disable pointer events on the video to hide player controls/branding */
+    /* Prevents clicking on the video to show YouTube controls */
     pointer-events: none; 
 }
 
 /* Text Overlay Styling - Professional Look */
 .header-text-overlay {
-    background: linear-gradient(90deg, #1f4068, #162447); /* Dark, deep gradient */
+    background: linear-gradient(90deg, #1f4068, #162447); 
     color: white;
     padding: 15px 20px;
     text-align: center;
-    border-bottom: 5px solid #ffcc00; /* Gold separator */
+    border-bottom: 5px solid #ffcc00; 
 }
 
 .header-text-overlay h1 {
@@ -88,7 +88,7 @@ body {
     padding: 8px 0;
     border: 2px solid #007bff;
     border-radius: 5px;
-    background-color: #f0f8ff; /* Light blue background */
+    background-color: #f0f8ff;
     font-size: 1.1em;
 }
 
@@ -113,7 +113,7 @@ body {
 }
 
 .check-btn {
-    background-color: #dc3545; /* Red, attention-grabbing button */
+    background-color: #dc3545; 
     color: white;
     border: none;
     padding: 12px 20px;
@@ -197,7 +197,7 @@ body {
 }
 
 .tick {
-    color: #28a745; /* Green checkmark */
+    color: #28a745; 
     font-weight: bold;
     margin-right: 12px;
     font-size: 1.1em;
@@ -209,7 +209,7 @@ body {
     justify-content: space-around;
     align-items: center;
     padding: 20px 10px;
-    background-color: #162447; /* Dark blue background for timer */
+    background-color: #162447; 
     border-radius: 5px;
     margin-top: 30px;
     color: white;
@@ -224,7 +224,7 @@ body {
     display: block;
     font-size: 2.2em;
     font-weight: 900;
-    color: #ffcc00; /* Gold color */
+    color: #ffcc00; 
 }
 
 .timer-box small {
@@ -244,7 +244,7 @@ body {
     color: #ffffff;
     font-size: 0.9em;
     font-weight: bold;
-    border-top: 5px solid #28a745; /* Green line */
+    border-top: 5px solid #28a745; 
 }
 
 /* --- Error 404 Styling --- */
