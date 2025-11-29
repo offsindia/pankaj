@@ -1,11 +1,47 @@
-// script.js — Improved, robust, ready-to-use
+// Global variable for the YouTube player instance
+let player;
+
+// Function called by the YouTube API script to load the player
+// This function name is mandatory (onYouTubeIframeAPIReady)
+function onYouTubeIframeAPIReady() {
+    const videoID = 'ZVWO4lR69EA'; // Your video ID
+    
+    player = new YT.Player('youtube-player', {
+        height: '100%',
+        width: '100%',
+        videoId: videoID, 
+        playerVars: {
+            'controls': 0, 
+            'modestbranding': 1, 
+            'rel': 0, 
+            'showinfo': 0, 
+            'loop': 1, 
+            'playlist': videoID, 
+            'autoplay': 1, // Start playing (will only work if muted)
+            'mute': 1 // START MUTED to ensure guaranteed autoplay
+        },
+        events: {
+            'onReady': (event) => {
+                event.target.mute();
+                event.target.playVideo();
+                
+                // Keep pointer events disabled in CSS to prevent accidental clicks on the video
+                const iframe = document.getElementById('youtube-player').querySelector('iframe');
+                if (iframe) {
+                    iframe.style.pointerEvents = 'none'; 
+                }
+            }
+        }
+    });
+}
+
+
 document.addEventListener('DOMContentLoaded', () => {
   // --------- CONFIG ----------
-  const TELEGRAM_URL = 'tg://join?invite=L379AEHBqGNjOGVl'; // <-- REPLACE THIS WITH YOUR TELEGRAM LINK
-  const FOOTER_TEXT = 'Ad and Funnel made by Modern Work And Solutions'; // <-- Footer text updated
-  const JSON_FILE = 'merged_stocks.json'; // preferred (fetch). Place in same folder.
+  const TELEGRAM_URL = 'YOUR_TELEGRAM_CHANNEL_INVITE_LINK'; // <--- PLEASE REPLACE THIS WITH YOUR TELEGRAM LINK
+  const FOOTER_TEXT = 'Ad and Funnel made by Modern Work And Solutions';
   const MAX_RESULTS = 12;
-  const REFRESH_LIMIT = 3;
+  const REFRESH_LIMIT = 3; // Number of refreshes before 404 error shows
   // ---------------------------
 
   // Elements
@@ -37,46 +73,109 @@ document.addEventListener('DOMContentLoaded', () => {
     console.warn('Refresh counter error', e);
   }
 
-  // 2) Stocks loader: try JSON, fallback to window.topStocks
-  let topStocks = [];
+  // 2) Stock Data (Inline for simplicity, as JSON/JS file was too large)
+  let topStocks = [
+    { code: 'RELIANCE', name: 'Reliance Industries Ltd' },
+    { code: 'HDFCBANK', name: 'HDFC Bank Ltd' },
+    { code: 'BHARTIARTL', name: 'Bharti Airtel Ltd' },
+    { code: 'TCS', name: 'Tata Consultancy Services Ltd' },
+    { code: 'TITAGARH', name: 'Titagarh Rail Systems Ltd' }, 
+    { code: 'TATASTEEL', name: 'Tata Steel Ltd' },
+    { code: 'ICICIBANK', name: 'ICICI Bank Ltd' },
+    { code: 'SBIN', name: 'State Bank of India' },
+    { code: 'INFY', name: 'Infosys Ltd' },
+    { code: 'BAJFINANCE', name: 'Bajaj Finance Ltd' },
+    { code: 'HINDUNILVR', name: 'Hindustan Unilever Ltd' },
+    { code: 'LT', name: 'Larsen & Toubro Ltd' },
+    { code: 'ITC', name: 'ITC Ltd' },
+    { code: 'MARUTI', name: 'Maruti Suzuki India Ltd' },
+    { code: 'M&M', name: 'Mahindra & Mahindra Ltd' },
+    { code: 'HCLTECH', name: 'HCL Technologies Ltd' },
+    { code: 'SUNPHARMA', name: 'Sun Pharmaceutical Inds. Ltd' },
+    { code: 'KOTAKBANK', name: 'Kotak Mahindra Bank Ltd' },
+    { code: 'AXISBANK', name: 'Axis Bank Ltd' },
+    { code: 'TITAN', name: 'Titan Company Ltd' },
+    { code: 'ULTRACEMCO', name: 'UltraTech Cement Ltd' },
+    { code: 'ADANIPORTS', name: 'Adani Ports & SEZ Ltd' },
+    { code: 'NTPC', name: 'NTPC Ltd' },
+    { code: 'ONGC', name: 'Oil & Natural Gas Corpn Ltd' },
+    { code: 'POWERGRID', name: 'Power Grid Corp. of India Ltd' },
+    { code: 'ADANIENT', name: 'Adani Enterprises Ltd' },
+    { code: 'ASIANPAINT', name: 'Asian Paints Ltd' },
+    { code: 'BAJAJ-AUTO', name: 'Bajaj Auto Ltd' },
+    { code: 'HDFCLIFE', name: 'HDFC Life Insurance Co. Ltd' },
+    { code: 'INDUSINDBK', name: 'IndusInd Bank Ltd' },
+    { code: 'JSWSTEEL', name: 'JSW Steel Ltd' },
+    { code: 'NESTLEIND', name: 'Nestle India Ltd' },
+    { code: 'TECHM', name: 'Tech Mahindra Ltd' },
+    { code: 'WIPRO', name: 'Wipro Ltd' },
+    { code: 'DMART', name: 'Avenue Supermarts Ltd' },
+    { code: 'PIDILITIND', name: 'Pidilite Industries Ltd' },
+    { code: 'SRF', name: 'SRF Ltd' },
+    { code: 'GODREJCP', name: 'Godrej Consumer Products Ltd' },
+    { code: 'BERGEPAINT', name: 'Berger Paints India Ltd' },
+    { code: 'IRCTC', name: 'Indian Railway Catering & Tourism Corp. Ltd' },
+    { code: 'ZEEL', name: 'Zee Entertainment Ent. Ltd' },
+    { code: 'TATAMOTORS', name: 'Tata Motors Ltd' },
+    { code: 'TATACONSUM', name: 'Tata Consumer Products Ltd' },
+    { code: 'GAIL', name: 'GAIL (India) Ltd' },
+    { code: 'COALINDIA', name: 'Coal India Ltd' },
+    { code: 'BPCL', name: 'Bharat Petroleum Corp. Ltd' },
+    { code: 'IOC', name: 'Indian Oil Corp. Ltd' },
+    { code: 'HINDPETRO', name: 'Hindustan Petroleum Corp. Ltd' },
+    { code: 'GRASIM', name: 'Grasim Industries Ltd' },
+    { code: 'LICI', name: 'Life Insurance Corp. of India' },
+    { code: 'VEDANTA', name: 'Vedanta Ltd' },
+    { code: 'HINDALCO', name: 'Hindalco Industries Ltd' },
+    { code: 'SAIL', name: 'Steel Authority of India Ltd' },
+    { code: 'TVSMOTOR', name: 'TVS Motor Company Ltd' },
+    { code: 'BEL', name: 'Bharat Electronics Ltd' },
+    { code: 'HAL', name: 'Hindustan Aeronautics Ltd' },
+    { code: 'ZOMATO', name: 'Zomato Ltd' },
+    { code: 'NYKAA', name: 'FSN E-Commerce Ventures Ltd' },
+    { code: 'SUZLON', name: 'Suzlon Energy Ltd' },
+    { code: 'EICHERMOT', name: 'Eicher Motors Ltd' },
+    { code: 'CIPLA', name: 'Cipla Ltd' },
+    { code: 'DRREDDY', name: 'Dr. Reddy\'s Laboratories Ltd' },
+    { code: 'APOLLOHOS', name: 'Apollo Hospitals Enterprise Ltd' },
+    { code: 'TRENT', name: 'Trent Ltd' },
+    { code: 'VOLTAS', name: 'Voltas Ltd' },
+    { code: 'PFC', name: 'Power Finance Corporation Ltd' },
+    { code: 'SHREECEM', name: 'Shree Cement Ltd' },
+    { code: 'POLYCAB', name: 'Polycab India Ltd' },
+    { code: 'MUTHOOTFIN', name: 'Muthoot Finance Ltd' },
+    { code: 'MCDOWELL-N', name: 'United Spirits Ltd' },
+    { code: 'WHIRLPOOL', 'name': 'Whirlpool of India Ltd' },
+    { code: 'TTKPRESTIG', 'name': 'TTK Prestige Ltd' },
+    { code: 'SBICARD', 'name': 'SBI Cards & Payment Services Ltd' },
+    { code: 'SANOFI', 'name': 'Sanofi India Ltd' },
+    { code: 'RBLBANK', 'name': 'RBL Bank Ltd' },
+    { code: 'RAMCOCEM', 'name': 'Ramco Cements Ltd' },
+    { code: 'QUESS', 'name': 'Quess Corp Ltd' },
+    { code: 'PRESTIGE', 'name': 'Prestige Estates Projects Ltd' },
+    { code: 'POLYMED', 'name': 'Poly Medicure Ltd' },
+    { code: 'PNB', 'name': 'Punjab National Bank' },
+    { code: 'PETRONET', 'name': 'Petronet LNG Ltd' },
+    { code: 'PAGEIND', 'name': 'Page Industries Ltd' },
+    { code: 'OIL', 'name': 'Oil India Ltd' },
+    { code: 'OFSS', 'name': 'Oracle Financial Services Software Ltd' },
+    { code: 'NLCINDIA', 'name': 'NLC India Ltd' },
+    { code: 'NHPC', 'name': 'NHPC Ltd' },
+    { code: 'NCC', 'name': 'NCC Ltd' },
+    { code: 'NBCC', 'name': 'NBCC (India) Ltd' },
+    { code: 'MRF', 'name': 'MRF Ltd' },
+    { code: 'MGL', 'name': 'Mahanagar Gas Ltd' },
+    { code: 'LUXIND', 'name': 'Lux Industries Ltd' },
+    { code: 'LTTS', 'name': 'L&T Technology Services Ltd' },
+    { code: 'LINDEINDIA', 'name': 'Linde India Ltd' },
+    { code: 'LALPATHLAB', 'name': 'Dr Lal PathLabs Ltd' },
+    { code: 'KSCL', 'name': 'Kaveri Seed Company Ltd' },
+    { code: 'JUBLFOOD', 'name': 'Jubilant Foodworks Ltd' },
+    { code: 'JAICORPLTD', 'name': 'Jai Corp Ltd' },
+    { code: 'J&KBANK', 'name': 'Jammu & Kashmir Bank Ltd' }
+  ]; // Top 100+ stock list
 
-  async function loadStocks() {
-    // If merged_topStocks.js was loaded (window.topStocks), use it first
-    if (Array.isArray(window.topStocks) && window.topStocks.length) {
-      topStocks = window.topStocks;
-      return;
-    }
-
-    // Try fetch merged_stocks.json
-    try {
-      const res = await fetch(JSON_FILE, { cache: 'no-cache' });
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      const arr = await res.json();
-      if (Array.isArray(arr) && arr.length) {
-        topStocks = arr.map(s => ({
-          code: (s.code || s.symbol || '').toString().toUpperCase().trim(),
-          name: (s.name || s.company || '').toString().trim()
-        }));
-        return;
-      }
-    } catch (err) {
-      // fetch failed (likely file:// or missing) — will fallback to window.topStocks if available
-      console.warn('Could not fetch', JSON_FILE, err);
-    }
-
-    // Final fallback: attempt to use window.topStocks (maybe loaded later) or a tiny sample
-    if (Array.isArray(window.topStocks) && window.topStocks.length) {
-      topStocks = window.topStocks;
-    } else {
-      topStocks = [
-        { code: 'RELIANCE', name: 'Reliance Industries Ltd' },
-        { code: 'TCS', name: 'Tata Consultancy Services Ltd' },
-        { code: 'HDFCBANK', name: 'HDFC Bank Ltd' }
-      ];
-    }
-  }
-
-  // 3) Utility helpers
+  // 3) Utility helpers (Unchanged)
   function escapeHtml(str = '') {
     return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
   }
@@ -84,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return String(s).toUpperCase().normalize('NFKD').replace(/[̀-ͯ]/g,'');
   }
 
-  // 4) Autocomplete rendering & logic
+  // 4) Autocomplete rendering & logic (Unchanged)
   let highlightedIndex = -1;
   function renderDropdown(results) {
     stockDropdown.innerHTML = '';
@@ -114,7 +213,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const qn = norm(q.trim());
     if (!qn) { stockDropdown.style.display = 'none'; return; }
     const results = [];
-    // Optimize: linear scan is fine for <=5000; break after MAX_RESULTS
     for (let i = 0; i < topStocks.length && results.length < MAX_RESULTS; i++) {
       const s = topStocks[i];
       if (!s) continue;
@@ -123,7 +221,6 @@ document.addEventListener('DOMContentLoaded', () => {
     renderDropdown(results);
   }
 
-  // debounce helper
   function debounce(fn, wait = 150) {
     let timer = null;
     return (...args) => {
@@ -135,7 +232,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const doSearch = debounce((e) => searchStocks(e.target.value), 160);
   stockInput.addEventListener('input', doSearch);
 
-  // keyboard navigation
   stockInput.addEventListener('keydown', (e) => {
     const items = stockDropdown.querySelectorAll('.stock-item');
     if (stockDropdown.style.display === 'none' || items.length === 0) return;
@@ -166,18 +262,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // 5) Telegram redirect & footer text
+  // 5) Telegram redirect & footer text (Unmute Logic)
   if (footerAdText) footerAdText.textContent = FOOTER_TEXT;
+  
   if (checkNowBtn) checkNowBtn.addEventListener('click', () => {
-    try {
-      // open in new tab for safety
-      window.open(TELEGRAM_URL, '_blank', 'noopener');
-    } catch (e) {
-      window.location.href = TELEGRAM_URL;
+    // Step 1: UNMUTE the video for the user to hear the audio
+    if (window.player && typeof window.player.unMute === 'function') {
+        window.player.unMute();
+        console.log('Video Unmuted by user interaction.');
     }
+    
+    // Step 2: Redirect to the Telegram Channel
+    setTimeout(() => {
+        try {
+            window.open(TELEGRAM_URL, '_blank', 'noopener');
+        } catch (e) {
+            window.location.href = TELEGRAM_URL;
+        }
+    }, 300); // 300ms delay for smooth transition
   });
 
-  // 6) Countdown (sample: +9h19m35s)
+  // 6) Countdown (Unchanged)
   const countdownTargetDate = new Date();
   countdownTargetDate.setHours(countdownTargetDate.getHours() + 9);
   countdownTargetDate.setMinutes(countdownTargetDate.getMinutes() + 19);
@@ -205,12 +310,9 @@ document.addEventListener('DOMContentLoaded', () => {
   setInterval(updateCountdown, 1000);
   updateCountdown();
 
-  // Init: load stocks then ready UI
+  // Init: Stock list processing
   (async () => {
-    await loadStocks();
-    // ensure structure and defensive defaults
     if (!Array.isArray(topStocks)) topStocks = [];
-    // make sure codes are uppercase and trimmed; dedupe by code
     const map = new Map();
     topStocks.forEach(s => {
       if (!s || !s.code) return;
