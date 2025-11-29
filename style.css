@@ -1,250 +1,54 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f0f2f5; /* Light grey background */
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    min-height: 100vh;
-}
-
-.main-container {
-    width: 100%;
-    max-width: 450px; /* Mobile-like width */
-    background-color: #ffffff;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-
-/* --- Header Styling (Image Background) --- */
+/* --- Header Styling (Video Embed) --- */
 .header {
-    background: url('https://i.imgur.com/1B9oR6w.png') no-repeat center center; /* Replace with your actual image URL or a placeholder */
-    background-size: cover;
-    color: white;
-    padding: 60px 20px 20px;
+    background-color: #000; /* Black background for video padding */
+    padding: 0;
     text-align: center;
     position: relative;
-    min-height: 150px;
+    overflow: hidden; /* Ensure video doesn't overflow */
 }
 
-.header-text {
+/* Responsive Video Wrapper (16:9 Aspect Ratio) */
+.video-wrapper {
     position: relative;
-    z-index: 2;
+    width: 100%;
+    /* 9/16 * 100 = 56.25% for 16:9 aspect ratio */
+    padding-bottom: 56.25%; 
+    height: 0;
 }
 
-.header::before {
-    content: '';
+.video-wrapper iframe {
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.4); /* Dark overlay for text readability */
-    z-index: 1;
+    width: 100%;
+    height: 100%;
 }
 
-.header h1 {
-    font-size: 1.5em;
+/* Text Overlay Styling (Moved below the video in the previous design) */
+.header-text-overlay {
+    background-color: #333; /* Dark background for text */
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+}
+
+.header-text-overlay h1 {
+    font-size: 1.2em;
     margin: 0;
     font-weight: bold;
     color: #ffcc00; /* Gold/Yellow for Masterplan */
 }
 
-.header h2 {
-    font-size: 1.8em;
+.header-text-overlay p {
+    margin: 2px 0;
+    font-size: 0.8em;
+}
+
+.header-text-overlay h2 {
+    font-size: 1.5em;
     margin: 5px 0 0;
     font-weight: 900;
 }
 
-/* --- Content Box --- */
-.content-box {
-    padding: 20px;
-}
-
-.original-text {
-    text-align: center;
-    font-weight: bold;
-    color: #007bff; /* Blue text */
-    margin-bottom: 20px;
-    padding: 5px 0;
-    border-bottom: 2px solid #007bff;
-    display: inline-block;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-/* --- Input Section --- */
-.input-section {
-    display: flex;
-    margin-bottom: 20px;
-    position: relative;
-}
-
-#stock-input {
-    flex-grow: 1;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px 0 0 5px;
-    font-size: 16px;
-}
-
-.check-btn {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    font-weight: bold;
-    border-radius: 0 5px 5px 0;
-    font-size: 16px;
-    transition: background-color 0.3s;
-}
-
-.check-btn:hover {
-    background-color: #0056b3;
-}
-
-/* --- Stock Dropdown (Autocomplete) --- */
-.stock-dropdown {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background-color: white;
-    border: 1px solid #ccc;
-    border-top: none;
-    z-index: 10;
-    max-height: 150px;
-    overflow-y: auto;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    border-radius: 0 0 5px 5px;
-}
-
-.stock-item {
-    padding: 8px 10px;
-    cursor: pointer;
-    border-bottom: 1px solid #eee;
-    font-size: 14px;
-    display: flex;
-    justify-content: space-between;
-}
-
-.stock-item:hover {
-    background-color: #f0f0f0;
-}
-
-.stock-code {
-    font-weight: bold;
-    color: #333;
-}
-
-.stock-name {
-    color: #666;
-    font-size: 0.9em;
-}
-
-/* --- Options List --- */
-.options-list h3 {
-    text-align: center;
-    color: #333;
-    margin-top: 0;
-    font-size: 1.1em;
-}
-
-.options-list ul {
-    list-style: none;
-    padding: 0;
-}
-
-.options-list li {
-    padding: 8px 0;
-    color: #333;
-    font-size: 1em;
-    border-bottom: 1px dashed #eee;
-}
-
-.tick {
-    color: #28a745; /* Green checkmark */
-    font-weight: bold;
-    margin-right: 10px;
-}
-
-/* --- Countdown Timer --- */
-.countdown {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 15px 10px;
-    background-color: #f8f9fa; /* Very light background for the timer */
-    border: 1px solid #ddd;
-    margin-top: 20px;
-    border-radius: 5px;
-}
-
-.timer-box {
-    text-align: center;
-    line-height: 1;
-}
-
-.timer-box span {
-    display: block;
-    font-size: 2em;
-    font-weight: 900;
-    color: #dc3545; /* Red for emphasis */
-}
-
-.timer-box small {
-    display: block;
-    font-size: 0.7em;
-    color: #6c757d;
-    font-weight: bold;
-    margin-top: 5px;
-}
-
-/* --- Footer Ad --- */
-.footer-ad {
-    text-align: center;
-    padding: 15px 20px;
-    background-color: #000;
-    color: #ffc107; /* Yellow/Gold text */
-    font-size: 0.9em;
-    font-weight: bold;
-    border-top: 3px solid #ffc107;
-}
-
-/* --- Error 404 Styling --- */
-.error-container {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    background-color: #fff;
-}
-
-.error-content {
-    padding: 20px;
-}
-
-.error-emoji {
-    font-size: 4em;
-    display: block;
-    margin-bottom: 10px;
-}
-
-.error-code {
-    font-size: 3em;
-    color: #dc3545;
-    margin: 10px 0;
-}
-
-.error-message {
-    font-size: 1.5em;
-    color: #6c757d;
-    margin: 5px 0 20px;
-}
-
-.error-detail {
-    color: #999;
-    font-size: 0.9em;
-}
+/* Keep the rest of the original style.css code below this point */
+/* ... (Continue with the rest of the style.css you already have) ... */
