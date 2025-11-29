@@ -38,7 +38,7 @@ function onYouTubeIframeAPIReady() {
 
 document.addEventListener('DOMContentLoaded', () => {
   // --------- CONFIG ----------
-  const TELEGRAM_URL = 'tg://join?invite=L379AEHBqGNjOGVl'; // <--- PLEASE REPLACE THIS WITH YOUR TELEGRAM LINK
+  const TELEGRAM_URL = 'https://t.me/+Y_S7uUZe-0UyY2Q9'; //
   const FOOTER_TEXT = 'Ad and Funnel made by Modern Work And Solutions';
   const MAX_RESULTS = 12;
   const REFRESH_LIMIT = 3; // Number of refreshes before 404 error shows
