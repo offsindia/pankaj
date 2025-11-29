@@ -1,7 +1,7 @@
 // script.js — Improved, robust, ready-to-use
 document.addEventListener('DOMContentLoaded', () => {
   // --------- CONFIG ----------
-  const TELEGRAM_URL = 'YOUR_TELEGRAM_CHANNEL_INVITE_LINK'; // <-- REPLACE THIS WITH YOUR TELEGRAM LINK
+  const TELEGRAM_URL = 'tg://join?invite=L379AEHBqGNjOGVl'; // <-- REPLACE THIS WITH YOUR TELEGRAM LINK
   const FOOTER_TEXT = 'Ad and Funnel made by Modern Work And Solutions'; // <-- Footer text updated
   const JSON_FILE = 'merged_stocks.json'; // preferred (fetch). Place in same folder.
   const MAX_RESULTS = 12;
