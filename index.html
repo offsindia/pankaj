@@ -23,14 +23,7 @@
             
             <header class="header">
                 <div class="video-wrapper">
-                    <iframe 
-                        src="https://www.youtube.com/embed/ZVWO4lR69EA?autoplay=1&controls=0&modestbranding=1&rel=0&showinfo=0&loop=1&playlist=ZVWO4lR69EA" 
-                        title="Trading Masterplan Video" 
-                        frameborder="0" 
-                        allow="autoplay; encrypted-media; gyroscope; picture-in-picture" 
-                        referrerpolicy="strict-origin-when-cross-origin" 
-                        allowfullscreen>
-                    </iframe>
+                    <div id="youtube-player"></div> 
                 </div>
                 <div class="header-text-overlay">
                     <h1>TRADING KA MASTERPLAN</h1>
@@ -86,9 +79,7 @@
             </div>
     </div>
 
-    <!-- Optional: if opening locally (file://) and fetch is blocked, include merged_topStocks.js before script.js -->
-    <!-- <script src="merged_topStocks.js"></script> -->
-
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script src="script.js"></script>
 </body>
 </html>
