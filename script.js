@@ -1,8 +1,44 @@
-// script.js — Improved, robust, ready-to-use
+// Global variable for the YouTube player instance
+let player;
+
+// Function called by the YouTube API script to load the player
+// This function name is mandatory (onYouTubeIframeAPIReady)
+function onYouTubeIframeAPIReady() {
+    // The video ID is ZVWO4lR69EA
+    player = new YT.Player('youtube-player', {
+        height: '100%',
+        width: '100%',
+        videoId: 'ZVWO4lR69EA', 
+        playerVars: {
+            'controls': 0, // No controls
+            'modestbranding': 1, // No YouTube logo
+            'rel': 0, // No related videos
+            'showinfo': 0, // No title/info
+            'loop': 1, // Loop video
+            'playlist': 'ZVWO4lR69EA', // Mandatory for looping
+            'autoplay': 1, // Start playing
+            'mute': 1 // START MUTED to ensure guaranteed autoplay
+        },
+        events: {
+            // Once the player is ready, explicitly ensure it's muted and playing
+            'onReady': (event) => {
+                event.target.mute();
+                event.target.playVideo();
+                // We also need to add pointer events back to allow interaction after loading
+                const iframe = document.getElementById('youtube-player').querySelector('iframe');
+                if (iframe) {
+                    iframe.style.pointerEvents = 'none'; // Keep hidden interaction
+                }
+            }
+        }
+    });
+}
+
+// script.js — Original Logic for counters, stocks, and buttons
 document.addEventListener('DOMContentLoaded', () => {
   // --------- CONFIG ----------
   const TELEGRAM_URL = 'YOUR_TELEGRAM_CHANNEL_INVITE_LINK'; // <-- REPLACE THIS WITH YOUR TELEGRAM LINK
-  const FOOTER_TEXT = 'Ad and Funnel made by Modern Work And Solutions'; // <-- Footer text updated
+  const FOOTER_TEXT = 'Ad and Funnel made by Modern Work And Solutions';
   const JSON_FILE = 'merged_stocks.json'; // preferred (fetch). Place in same folder.
   const MAX_RESULTS = 12;
   const REFRESH_LIMIT = 3;
@@ -41,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let topStocks = [];
 
   async function loadStocks() {
-    // If merged_topStocks.js was loaded (window.topStocks), use it first
+    // Note: The merged_topStocks.js file is provided as input, so we use window.topStocks
     if (Array.isArray(window.topStocks) && window.topStocks.length) {
       topStocks = window.topStocks;
       return;
@@ -60,23 +96,11 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
     } catch (err) {
-      // fetch failed (likely file:// or missing) — will fallback to window.topStocks if available
-      console.warn('Could not fetch', JSON_FILE, err);
-    }
-
-    // Final fallback: attempt to use window.topStocks (maybe loaded later) or a tiny sample
-    if (Array.isArray(window.topStocks) && window.topStocks.length) {
-      topStocks = window.topStocks;
-    } else {
-      topStocks = [
-        { code: 'RELIANCE', name: 'Reliance Industries Ltd' },
-        { code: 'TCS', name: 'Tata Consultancy Services Ltd' },
-        { code: 'HDFCBANK', name: 'HDFC Bank Ltd' }
-      ];
+      console.warn('Could not fetch stocks from file.', err);
     }
   }
 
-  // 3) Utility helpers
+  // 3) Utility helpers (unchanged)
   function escapeHtml(str = '') {
     return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
   }
@@ -84,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return String(s).toUpperCase().normalize('NFKD').replace(/[̀-ͯ]/g,'');
   }
 
-  // 4) Autocomplete rendering & logic
+  // 4) Autocomplete rendering & logic (unchanged)
   let highlightedIndex = -1;
   function renderDropdown(results) {
     stockDropdown.innerHTML = '';
@@ -114,7 +138,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const qn = norm(q.trim());
     if (!qn) { stockDropdown.style.display = 'none'; return; }
     const results = [];
-    // Optimize: linear scan is fine for <=5000; break after MAX_RESULTS
     for (let i = 0; i < topStocks.length && results.length < MAX_RESULTS; i++) {
       const s = topStocks[i];
       if (!s) continue;
@@ -123,7 +146,6 @@ document.addEventListener('DOMContentLoaded', () => {
     renderDropdown(results);
   }
 
-  // debounce helper
   function debounce(fn, wait = 150) {
     let timer = null;
     return (...args) => {
@@ -135,7 +157,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const doSearch = debounce((e) => searchStocks(e.target.value), 160);
   stockInput.addEventListener('input', doSearch);
 
-  // keyboard navigation
   stockInput.addEventListener('keydown', (e) => {
     const items = stockDropdown.querySelectorAll('.stock-item');
     if (stockDropdown.style.display === 'none' || items.length === 0) return;
@@ -166,18 +187,28 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // 5) Telegram redirect & footer text
+  // 5) Telegram redirect & footer text (MODIFIED for Unmute)
   if (footerAdText) footerAdText.textContent = FOOTER_TEXT;
+  
   if (checkNowBtn) checkNowBtn.addEventListener('click', () => {
-    try {
-      // open in new tab for safety
-      window.open(TELEGRAM_URL, '_blank', 'noopener');
-    } catch (e) {
-      window.location.href = TELEGRAM_URL;
+    // Step 1: UNMUTE the video for the user to hear the audio
+    if (window.player && typeof window.player.unMute === 'function') {
+        window.player.unMute();
+        console.log('Video Unmuted by user interaction.');
     }
+    
+    // Step 2: Redirect to the Telegram Channel
+    // We delay the redirect slightly to allow the unmuting action to register before navigation
+    setTimeout(() => {
+        try {
+            window.open(TELEGRAM_URL, '_blank', 'noopener');
+        } catch (e) {
+            window.location.href = TELEGRAM_URL;
+        }
+    }, 300); // 300ms delay for smooth transition
   });
 
-  // 6) Countdown (sample: +9h19m35s)
+  // 6) Countdown (Unchanged)
   const countdownTargetDate = new Date();
   countdownTargetDate.setHours(countdownTargetDate.getHours() + 9);
   countdownTargetDate.setMinutes(countdownTargetDate.getMinutes() + 19);
@@ -208,9 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Init: load stocks then ready UI
   (async () => {
     await loadStocks();
-    // ensure structure and defensive defaults
     if (!Array.isArray(topStocks)) topStocks = [];
-    // make sure codes are uppercase and trimmed; dedupe by code
     const map = new Map();
     topStocks.forEach(s => {
       if (!s || !s.code) return;
