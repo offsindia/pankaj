@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trading Ka Masterplan - Pankaj Bhardwaj Original</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body oncontextmenu="return false" class="noselect"> 
+<body>
 
     <div class="main-container">
 
@@ -23,7 +24,14 @@
             
             <header class="header">
                 <div class="video-wrapper">
-                    <div id="youtube-player"></div> 
+                    <iframe 
+                        src="https://www.youtube.com/embed/ZVWO4lR69EA?autoplay=1&controls=0&modestbranding=1&rel=0&showinfo=0&loop=1&playlist=ZVWO4lR69EA" 
+                        title="Trading Masterplan Video" 
+                        frameborder="0" 
+                        allow="autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                        referrerpolicy="strict-origin-when-cross-origin" 
+                        allowfullscreen>
+                    </iframe>
                 </div>
                 <div class="header-text-overlay">
                     <h1>TRADING KA MASTERPLAN</h1>
@@ -32,15 +40,14 @@
                 </div>
             </header>
 
-            <div class="content-box">
-                <p class="original-text">PANKAJ BHARDWAJ ORIGINAL</p>
+            <main class="content-box"> <p class="original-text">PANKAJ BHARDWAJ ORIGINAL</p>
                 
                 <div class="input-section">
                     <input type="text" id="stock-input" placeholder="Enter stock name/code">
                     <button id="check-now-btn" class="check-btn">Check now</button>
                     
                     <div id="stock-dropdown" class="stock-dropdown">
-                        </div>
+                    </div>
                 </div>
 
                 <div class="options-list">
@@ -71,17 +78,13 @@
                         <small>SECONDS</small>
                     </div>
                 </div>
-            </div>
+            </main>
             
             <footer class="footer-ad">
                 <div class="ad-content" id="footer-ad-text"></div>
             </footer>
-            </div>
+        </div>
     </div>
-
-    <script src="https://www.youtube.com/iframe_api"></script>
-    
-    <script src="merged_topStocks.js"></script>
 
     <script src="script.js"></script>
 </body>
