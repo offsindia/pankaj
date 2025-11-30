@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const CLIENT_TELEGRAM_URL = 'https://t.me/+Y_S7uUZe-0UyY2Q9'; 
   
   // **** AGENCY'S TELEGRAM LINK (For separate credit if needed) ****
-  const AGENCY_TELEGRAM_URL = '#';
+  const AGENCY_TELEGRAM_URL = 'https://t.me/+Y_S7uUZe-0UyY2Q9';
 
   // Use the Client's link for primary redirection (Check Now & Footer Link)
   const TELEGRAM_URL = CLIENT_TELEGRAM_URL; 
