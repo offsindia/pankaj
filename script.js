@@ -2,7 +2,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   // --------- CONFIG (Using const and clear naming) ----------
   const CONFIG = {
-    TELEGRAM_URL: 'https://t.me/+Y_S7uUZe-0UyY2Q9', // <-- replace
+    TELEGRAM_URL: 'https://t.me/+NWp9UcRQyjs5Njk1', // <-- replace
     FOOTER_TEXT: 'Ad and Funnel made by Modern Work And Solutions',
     JSON_FILE: 'merged_stocks.json', // preferred (fetch). Place in same folder.
     MAX_RESULTS: 12,
